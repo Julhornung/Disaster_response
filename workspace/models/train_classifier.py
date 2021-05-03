@@ -31,9 +31,14 @@ def load_data(database_filepath):
     
     X = df['message'].values
     
-    Y = df.drop(['message', 'original','genre', 'id'], axis = 1).values
+    Y = df.drop(['message', 'original', 'id'], axis = 1).values
 
-    category_names = df.drop(['message', 'original','genre', 'id'], axis = 1).columns
+    category_names = df.drop(['message', 'original', 'id'], axis = 1).columns
+    
+    #for column in Y_df.columns:
+        
+       #print(column)
+       #print(df[column].unique())
     
     return(X, Y, category_names)
 
@@ -94,7 +99,8 @@ def main():
         X, Y, category_names = load_data(database_filepath)
                
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
-
+        print(np.unique(X_train))
+        print(np.unique(X_test))
         print('Building model...')
         model = build_model()
 
