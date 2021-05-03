@@ -22,11 +22,19 @@ def clean_data(df, categories):
     for column in categories:
         categories[column] = categories[column].str.strip().str[-1]
         categories[column] = pd.to_numeric(categories[column])
+        
+    categories['related'] = categories['related'].replace(2,1)
     
     df = df.drop('categories', axis = 1)
     df = pd.concat([df, categories], axis=1)
-    df = df.drop_duplicates()
+    df = df.drop('genre', axis = 1)
+    df = df.drop_duplicates().dropna()
     
+    for column in df.columns:
+        print(column)
+        
+        print(df[column].unique())
+      
     return(df)
 
 
