@@ -57,7 +57,7 @@ def tokenize(text):
     
     words = [porter.stem(w) for w in words]
     
-    pass
+    return(words)
 
 
 def build_model():

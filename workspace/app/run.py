@@ -30,7 +30,7 @@ engine = create_engine('sqlite:///../data/DisasterResponse.db')
 df = pd.read_sql_table('Table', engine)
 
 # load model
-model = joblib.load("../models/your_model_name.pkl")
+model = joblib.load("../finalized_model.sav")
 
 
 # index webpage displays cool visuals and receives user input text for model
@@ -40,8 +40,11 @@ def index():
     
     # extract data needed for visuals
     # TODO: Below is an example - modify to extract data for your own visuals
-    genre_counts = df.groupby('genre').count()['message']
-    genre_names = list(genre_counts.index)
+    aid_counts = df.groupby('aid_related').count()['message']
+    aid_names = list(aid_counts.index)
+    
+    medical_counts = df.groupby('medical_help').count()['message']
+    medical_names = list(medical_counts.index)
     
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
@@ -49,22 +52,41 @@ def index():
         {
             'data': [
                 Bar(
-                    x=genre_names,
-                    y=genre_counts
+                    x=aid_names,
+                    y=aid_counts
                 )
             ],
 
             'layout': {
-                'title': 'Distribution of Message Genres',
+                'title': 'Distribution of Aid Related',
                 'yaxis': {
                     'title': "Count"
                 },
                 'xaxis': {
-                    'title': "Genre"
+                    'title': "Aid Related"
+                }
+            }
+        },
+        {
+            'data': [
+                Bar(
+                    x=medical_names,
+                    y=medical_counts
+                )
+            ],
+
+            'layout': {
+                'title': 'Distribution of Medical Related',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "Medical Related"
                 }
             }
         }
     ]
+    
     
     # encode plotly graphs in JSON
     ids = ["graph-{}".format(i) for i, _ in enumerate(graphs)]
@@ -72,6 +94,8 @@ def index():
     
     # render web page with plotly graphs
     return render_template('master.html', ids=ids, graphJSON=graphJSON)
+
+
 
 
 # web page that handles user query and displays model results
