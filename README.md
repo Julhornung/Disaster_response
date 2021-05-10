@@ -21,7 +21,6 @@ pickle 4.0
 
 # Files:
 
-
 workspace/data/process_data.py:
 
 	A data cleaning pipeline that:
